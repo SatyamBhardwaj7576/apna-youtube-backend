@@ -8,15 +8,25 @@ dotenv.config({
   path: "./env",
 });
 
-connectDB();
-
-
-
+connectDB()
+  .then(() => {
+    app.on("error", (error) => {
+      console.log("Error :", error);
+      throw error;
+    });
+    app.listen(process.env.PORT || 8000, () => {
+      console.log(`Server started on port ${process.env.PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("MongoDB connection failed !!! :", error);
+  });
 
 //********************* ye phli approach hai hmm aise bhi kar skate hain
-//    but aise me index file thoda jayda hi bulky ho gyi hai isliye tdusri approach thodi bettr approach hai */
+//    but aise me index file thoda jayda hi bulky ho gyi hai isliye dusri approach thodi bettr approach hai */
 
 //sabse phle mongoose important hai whi database se connect karega
+//yahan prr index file ke andar hi sbb kch ekk sath akr diya
 
 //import mongoose from "mongoose";
 
