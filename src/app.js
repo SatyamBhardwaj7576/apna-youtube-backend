@@ -27,4 +27,21 @@ app.use(express.static("public"))
 
 app.use(cookieParser());
 
+
+
+
+
+//routes import 
+
+import userRouter from './routes/user.routes.js';
+
+
+//routes declaration
+app.use("/api/v1/users", userRouter);
+//iska matlab hai bhi koi /users dalega control chla jayega userRouter ke pass me 
+//iss tarike url bnega 
+
+//http://localhost::8000/api/v1/users/register
+
+ 
 export { app };
