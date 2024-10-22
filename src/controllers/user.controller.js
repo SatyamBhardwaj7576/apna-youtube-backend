@@ -22,6 +22,7 @@ const registerUser = asyncHandler(async(req,res)=>{
 
   const {fullName, email,username , password} = req.body;
   console.log("email :",email);
+  console.log("req.body->",req.body);
   
 //isse bsss full name check kiye hain
 //Aise hi tmm bohot sare if else laga ke sab kch check kar sakte ho
@@ -38,7 +39,9 @@ field?.trim()==="")){
 
 //abb user check karne ka tarika 
 
-const existedUser = User.findOne({
+//database alag continent me hota hai 
+//usko lane me dair lage gii isliye  use await
+const existedUser = await  User.findOne({
     $or : [{username},{email}]
 })
 
@@ -49,7 +52,13 @@ if(existedUser){
 //image bagera bhi dekh lete hain
 
 const avatarLocalPath = req.files?.avatar[0]?.path;
-const coverImageLocalPath = req.files?.coverImage[0]?.path;
+//const coverImageLocalPath = req.files?.coverImage[0]?.path;
+let coverImageLocalPath;
+if(req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+}
+
+console.log("req.files",req.files);
 
 if(!avatarLocalPath){
     throw new ApiError(400,"Avatar file is required ")
@@ -59,6 +68,8 @@ if(!avatarLocalPath){
 
 const avatar = await uploadOnCloudinary(avatarLocalPath)
 const coverImage = await uploadOnCloudinary(coverImageLocalPath)
+
+console.log("avataar local path ->",avatarLocalPath);
 
 if(!avatar){
     throw new ApiError(400,"Avatar file is required ");
@@ -78,6 +89,8 @@ const user = await User.create({
 const createdUser = await User.findById(user._id).select(
     " -password -refreshToken"
 )
+
+console.log("user._id = " , user._id);
 
 if(!createdUser){
     throw new ApiError(500,"Something is wrong while registering user")

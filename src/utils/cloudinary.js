@@ -18,22 +18,30 @@ cloudinary.config({
 //ekk accha se method bna lete hain uska
 
 const uploadOnCloudinary = async (localFilePath) => {
+  console.log(localFilePath);
   try {
     if (!localFilePath) return null;
     //upload the file on cloudinary
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
     });
+    console.log(response);
     //file uploaded successfully
-    console.log("file is uploaded successfully on cloudinary", response.url);
+    // console.log("file is uploaded successfully on cloudinary", response.url);
+
+    //abb upload hone ke baad isko unlik kar dete hain
+    fs.unlinkSync(localFilePath);
 
     //ye response user ke liye return kiya hai
+    console.log(response);
     return response;
+   
   } catch (error) {
     fs.unlinkSync(localFilePath);
     //remove the locally saved temproary file as
     // the upload operation got failed
+    console.error(error);
   }
 };
 
-export { uploadOnCloudinary};
+export { uploadOnCloudinary };

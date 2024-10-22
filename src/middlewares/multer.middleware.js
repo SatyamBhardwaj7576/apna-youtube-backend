@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
       //isliye iss functionality ko khud se add karna hai
       //project complete hone ke baad 
     }
-  })
+  }) 
   
 export const upload = multer({
      storage: storage 

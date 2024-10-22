@@ -14,11 +14,9 @@ router.route("/register").post(
         {
             name:"coverImage",
             maxcount:1
-
         }
 
-    ]),
-    registerUser)
+    ]),registerUser)
 
 
 export default router
